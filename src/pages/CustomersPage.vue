@@ -82,7 +82,7 @@ import CategoryDropdown from 'src/components/CategoryDropdown.vue';
 
 const baseURL = window.location.hostname === 'localhost' 
   ? 'http://localhost:3000/api' 
-  : 'https://kadmin-7i923vaxr-goldenarchangels-projects.vercel.app/api';
+  : 'https://kadmin-ten.vercel.app/api';
 
 const customers = ref([]);
 const searchTerm = ref('');
