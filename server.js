@@ -23,6 +23,7 @@ app.post('/api/login', async (req, res) => {
     const user = await authenticateUser(username, password);
     res.status(200).json({ message: 'Login successful', token: 'your-auth-token', user });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(401).json({ message: 'Login failed', error: error.message });
   }
 });
