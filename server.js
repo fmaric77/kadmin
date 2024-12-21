@@ -3,7 +3,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import path from 'path'; // Add this line
+import path from 'path';
 import { authenticateUser } from './src/api/login/login.js';
 import { getCustomers, addCustomer, updateCustomer, deleteCustomer } from './src/api/customers/customers.js';
 import { getSellers, addSeller, updateSeller, deleteSeller } from './src/api/sellers/sellers.js';
@@ -14,7 +14,7 @@ import { getProductsOnOrder, addProductOnOrder, updateProductOnOrder, deleteProd
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors()); // Enable CORS
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist/spa')));
 
@@ -53,9 +53,11 @@ app.get('/api/productsOnOrder', getProductsOnOrder);
 app.post('/api/productsOnOrder', addProductOnOrder);
 app.put('/api/productsOnOrder/:OrderId/:ProductId', updateProductOnOrder);
 app.delete('/api/productsOnOrder/:OrderId/:ProductId', deleteProductOnOrder);
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/spa', 'index.html'));
 });
+
 app.listen(port, () => {
   const baseURL = process.env.NODE_ENV === 'development' 
     ? `http://localhost:${port}` 
