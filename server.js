@@ -3,6 +3,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import path from 'path'; // Add this line
 import { authenticateUser } from './src/api/login/login.js';
 import { getCustomers, addCustomer, updateCustomer, deleteCustomer } from './src/api/customers/customers.js';
 import { getSellers, addSeller, updateSeller, deleteSeller } from './src/api/sellers/sellers.js';
