@@ -15,6 +15,7 @@ const port = process.env.PORT || 3000;
 
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'dist/spa')));
 
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
@@ -50,7 +51,9 @@ app.get('/api/productsOnOrder', getProductsOnOrder);
 app.post('/api/productsOnOrder', addProductOnOrder);
 app.put('/api/productsOnOrder/:OrderId/:ProductId', updateProductOnOrder);
 app.delete('/api/productsOnOrder/:OrderId/:ProductId', deleteProductOnOrder);
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist/spa', 'index.html'));
+});
 app.listen(port, () => {
   const baseURL = process.env.NODE_ENV === 'development' 
     ? `http://localhost:${port}` 
