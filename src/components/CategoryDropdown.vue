@@ -16,13 +16,12 @@
   const router = useRouter();
   
   const categories = [
-  { label: 'Kupci', value: 'KUPAC' },
+    { label: 'Kupci', value: 'KUPAC' },
     { label: 'Prodavači', value: 'PRODAVAC' },
     { label: 'Narudžbe', value: 'NARUDZBA' },
     { label: 'Proizvodi na narudžbi', value: 'PROIZVOD_NA_NARUDZBI' },
     { label: 'Proizvodi', value: 'PROIZVOD' },
-     // Added new category
-
+    { label: 'Admin Board', value: 'ADMIN_BOARD' } // Added new category
   ];
   
   const selectedCategory = ref(null);
@@ -44,11 +43,14 @@
       case 'PROIZVOD_NA_NARUDZBI':
         router.push('/products-on-order');
         break;
-      case 'PROIZVOD': // Added new case
+      case 'PROIZVOD':
         router.push('/products');
+        break;
+      case 'ADMIN_BOARD': // Added new case
+        router.push('/admin-board');
         break;
       default:
         break;
     }
-};
+  };
   </script>

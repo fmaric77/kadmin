@@ -80,6 +80,10 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import CategoryDropdown from 'src/components/CategoryDropdown.vue';
 
+const baseURL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:3000/api' 
+  : 'https://kadmin-7i923vaxr-goldenarchangels-projects.vercel.app/api';
+
 const customers = ref([]);
 const searchTerm = ref('');
 const isDialogOpen = ref(false);
@@ -100,7 +104,7 @@ const columns = [
 ];
 
 const fetchCustomers = async () => {
-  const response = await axios.get('http://localhost:3000/api/customers');
+  const response = await axios.get(`${baseURL}/customers`);
   customers.value = response.data.map(customer => ({
     ...customer,
     isEditingName: false,
@@ -139,19 +143,19 @@ const editCustomer = (customer) => {
 };
 
 const addCustomer = async () => {
-  await axios.post('http://localhost:3000/api/customers', form.value);
+  await axios.post(`${baseURL}/customers`, form.value);
   fetchCustomers();
   closeDialog();
 };
 
 const updateCustomer = async () => {
-  await axios.put(`http://localhost:3000/api/customers/${form.value.Sifra_kupca}`, form.value);
+  await axios.put(`${baseURL}/customers/${form.value.Sifra_kupca}`, form.value);
   fetchCustomers();
   closeDialog();
 };
 
 const deleteCustomer = async (customerId) => {
-  await axios.delete(`http://localhost:3000/api/customers/${customerId}`);
+  await axios.delete(`${baseURL}/customers/${customerId}`);
   fetchCustomers();
 };
 
@@ -175,7 +179,7 @@ const saveChanges = async (customer, field) => {
   if (field === 'surname') customer.isEditingSurname = false;
   if (field === 'address') customer.isEditingAddress = false;
   if (field === 'email') customer.isEditingEmail = false;
-  await axios.put(`http://localhost:3000/api/customers/${customer.Sifra_kupca}`, customer);
+  await axios.put(`${baseURL}/customers/${customer.Sifra_kupca}`, customer);
   fetchCustomers();
 };
 

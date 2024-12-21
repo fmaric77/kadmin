@@ -64,6 +64,10 @@
   import axios from 'axios';
   import CategoryDropdown from 'src/components/CategoryDropdown.vue';
   
+  const baseURL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api' 
+    : 'https://kadmin-7i923vaxr-goldenarchangels-projects.vercel.app/api';
+  
   const productsOnOrder = ref([]);
   const orders = ref([]);
   const products = ref([]);
@@ -85,7 +89,7 @@
   
   const fetchProductsOnOrder = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/productsOnOrder');
+      const response = await axios.get(`${baseURL}/productsOnOrder`);
       productsOnOrder.value = response.data;
     } catch (error) {
       console.error('Error fetching products on order:', error);
@@ -94,7 +98,7 @@
   
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/orders');
+      const response = await axios.get(`${baseURL}/orders`);
       orders.value = response.data.map(order => ({
         label: order.Sifra_narudzbe,
         value: order.Sifra_narudzbe,
@@ -106,7 +110,7 @@
   
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/products');
+      const response = await axios.get(`${baseURL}/products`);
       products.value = response.data.map(product => ({
         label: product.Naziv,
         value: product.Sifra_proizvoda,
@@ -152,7 +156,7 @@
       return;
     }
     try {
-      await axios.post('http://localhost:3000/api/productsOnOrder', form.value);
+      await axios.post(`${baseURL}/productsOnOrder`, form.value);
       fetchProductsOnOrder();
       closeDialog();
     } catch (error) {
@@ -167,7 +171,7 @@
       return;
     }
     try {
-      await axios.put(`http://localhost:3000/api/productsOnOrder/${form.value.Sifra_narudzbe}/${form.value.Sifra_proizvoda}`, form.value);
+      await axios.put(`${baseURL}/productsOnOrder/${form.value.Sifra_narudzbe}/${form.value.Sifra_proizvoda}`, form.value);
       fetchProductsOnOrder();
       closeDialog();
     } catch (error) {
@@ -179,7 +183,7 @@
   const deleteProductOnOrder = async (orderId, productId) => {
     if (!confirm('Jeste li sigurni da želite izbrisati ovaj proizvod na narudžbi?')) return;
     try {
-      await axios.delete(`http://localhost:3000/api/productsOnOrder/${orderId}/${productId}`);
+      await axios.delete(`${baseURL}/productsOnOrder/${orderId}/${productId}`);
       fetchProductsOnOrder();
     } catch (error) {
       console.error('Error deleting product on order:', error);

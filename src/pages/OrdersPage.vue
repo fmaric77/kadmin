@@ -97,17 +97,20 @@
   import { ref, onMounted, computed } from 'vue';
   import axios from 'axios';
   import CategoryDropdown from 'src/components/CategoryDropdown.vue';
-
+  
+  const baseURL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api' 
+    : 'https://kadmin-7i923vaxr-goldenarchangels-projects.vercel.app/api';
+  
   const formatDate = (dateString) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  return date.toLocaleDateString('hr-HR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
-};
-
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('hr-HR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
   
   const orders = ref([]);
   const customers = ref([]);
@@ -142,7 +145,7 @@
   
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/orders');
+      const response = await axios.get(`${baseURL}/orders`);
       orders.value = response.data;
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -151,7 +154,7 @@
   
   const fetchCustomers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/customers');
+      const response = await axios.get(`${baseURL}/customers`);
       customers.value = response.data.map(customer => ({
         label: `${customer.Ime_kupca} ${customer.Prezime_kupca}`,
         value: customer.Sifra_kupca,
@@ -163,7 +166,7 @@
   
   const fetchSellers = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/sellers');
+      const response = await axios.get(`${baseURL}/sellers`);
       sellers.value = response.data.map(seller => ({
         label: seller.Ime_prodavaca,
         value: seller.Sifra_prodavaca,
@@ -173,23 +176,22 @@
     }
   };
   
-// Update the filteredOrders computed property
-const filteredOrders = computed(() => {
-  if (!searchTerm.value) return orders.value;
-  const term = searchTerm.value.toLowerCase();
-  return orders.value.filter(order => {
-    const customerName = getCustomerName(order.SIFRA_KUPCA).toLowerCase();
-    const sellerName = getSellerName(order.SIFRA_PRODAVACA).toLowerCase();
-    const formattedDate = formatDate(order.Datum_narudzbe);
-    
-    return customerName.includes(term) ||
-           sellerName.includes(term) ||
-           formattedDate.includes(term) ||
-           (order.Nacin_placanja || '').toLowerCase().includes(term) ||
-           (order.Cijena_narudzbe || '').toString().includes(term) ||
-           (order.Sifra_narudzbe || '').toString().includes(term);
+  const filteredOrders = computed(() => {
+    if (!searchTerm.value) return orders.value;
+    const term = searchTerm.value.toLowerCase();
+    return orders.value.filter(order => {
+      const customerName = getCustomerName(order.SIFRA_KUPCA).toLowerCase();
+      const sellerName = getSellerName(order.SIFRA_PRODAVACA).toLowerCase();
+      const formattedDate = formatDate(order.Datum_narudzbe);
+      
+      return customerName.includes(term) ||
+             sellerName.includes(term) ||
+             formattedDate.includes(term) ||
+             (order.Nacin_placanja || '').toLowerCase().includes(term) ||
+             (order.Cijena_narudzbe || '').toString().includes(term) ||
+             (order.Sifra_narudzbe || '').toString().includes(term);
+    });
   });
-});
   
   const showAddOrderDialog = () => {
     isEditing.value = false;
@@ -220,13 +222,13 @@ const filteredOrders = computed(() => {
     }
     try {
       const orderData = {
-        SIFRA_KUPCA: form.value.SIFRA_KUPCA, // ID
-        SIFRA_PRODAVACA: form.value.SIFRA_PRODAVACA, // ID
+        SIFRA_KUPCA: form.value.SIFRA_KUPCA,
+        SIFRA_PRODAVACA: form.value.SIFRA_PRODAVACA,
         Datum_narudzbe: form.value.Datum_narudzbe,
         Nacin_placanja: form.value.Nacin_placanja,
         Cijena_narudzbe: form.value.Cijena_narudzbe,
       };
-      await axios.post('http://localhost:3000/api/orders', orderData);
+      await axios.post(`${baseURL}/orders`, orderData);
       fetchOrders();
       closeDialog();
     } catch (error) {
@@ -242,13 +244,13 @@ const filteredOrders = computed(() => {
     }
     try {
       const orderData = {
-        SIFRA_KUPCA: form.value.SIFRA_KUPCA, // ID
-        SIFRA_PRODAVACA: form.value.SIFRA_PRODAVACA, // ID
+        SIFRA_KUPCA: form.value.SIFRA_KUPCA,
+        SIFRA_PRODAVACA: form.value.SIFRA_PRODAVACA,
         Datum_narudzbe: form.value.Datum_narudzbe,
         Nacin_placanja: form.value.Nacin_placanja,
         Cijena_narudzbe: form.value.Cijena_narudzbe,
       };
-      await axios.put(`http://localhost:3000/api/orders/${form.value.Sifra_narudzbe}`, orderData);
+      await axios.put(`${baseURL}/orders/${form.value.Sifra_narudzbe}`, orderData);
       fetchOrders();
       closeDialog();
     } catch (error) {
@@ -260,7 +262,7 @@ const filteredOrders = computed(() => {
   const deleteOrder = async (orderId) => {
     if (!confirm('Jeste li sigurni da želite izbrisati ovu narudžbu?')) return;
     try {
-      await axios.delete(`http://localhost:3000/api/orders/${orderId}`);
+      await axios.delete(`${baseURL}/orders/${orderId}`);
       fetchOrders();
     } catch (error) {
       console.error('Error deleting order:', error);

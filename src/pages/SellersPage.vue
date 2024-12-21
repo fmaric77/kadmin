@@ -66,6 +66,10 @@
   import axios from 'axios';
   import CategoryDropdown from 'src/components/CategoryDropdown.vue';
   
+  const baseURL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api' 
+    : 'https://kadmin-7i923vaxr-goldenarchangels-projects.vercel.app/api';
+  
   const sellers = ref([]);
   const searchTerm = ref('');
   const isDialogOpen = ref(false);
@@ -84,7 +88,7 @@
   ];
   
   const fetchSellers = async () => {
-    const response = await axios.get('http://localhost:3000/api/sellers');
+    const response = await axios.get(`${baseURL}/sellers`);
     sellers.value = response.data.map(seller => ({
       ...seller,
       isEditingName: false,
@@ -114,19 +118,19 @@
   };
   
   const addSeller = async () => {
-    await axios.post('http://localhost:3000/api/sellers', form.value);
+    await axios.post(`${baseURL}/sellers`, form.value);
     fetchSellers();
     closeDialog();
   };
   
   const updateSeller = async () => {
-    await axios.put(`http://localhost:3000/api/sellers/${form.value.Sifra_prodavaca}`, form.value);
+    await axios.put(`${baseURL}/sellers/${form.value.Sifra_prodavaca}`, form.value);
     fetchSellers();
     closeDialog();
   };
   
   const deleteSeller = async (sellerId) => {
-    await axios.delete(`http://localhost:3000/api/sellers/${sellerId}`);
+    await axios.delete(`${baseURL}/sellers/${sellerId}`);
     fetchSellers();
   };
   
@@ -148,7 +152,7 @@
     if (field === 'name') seller.isEditingName = false;
     if (field === 'address') seller.isEditingAddress = false;
     if (field === 'email') seller.isEditingEmail = false;
-    await axios.put(`http://localhost:3000/api/sellers/${seller.Sifra_prodavaca}`, seller);
+    await axios.put(`${baseURL}/sellers/${seller.Sifra_prodavaca}`, seller);
     fetchSellers();
   };
   

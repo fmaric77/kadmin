@@ -8,10 +8,10 @@ import { getCustomers, addCustomer, updateCustomer, deleteCustomer } from './src
 import { getSellers, addSeller, updateSeller, deleteSeller } from './src/api/sellers/sellers.js';
 import { getOrders, addOrder, updateOrder, deleteOrder } from './src/api/orders/orders.js';
 import { getProducts, addProduct, updateProduct, deleteProduct } from './src/api/products/products.js';
-import {  getProductsOnOrder, addProductOnOrder,   updateProductOnOrder, deleteProductOnOrder } from './src/api/productOnOrder/productOnOrder.js';
+import { getProductsOnOrder, addProductOnOrder, updateProductOnOrder, deleteProductOnOrder } from './src/api/productOnOrder/productOnOrder.js';
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json());
@@ -31,12 +31,10 @@ app.post('/api/customers', addCustomer);
 app.put('/api/customers/:Sifra_kupca', updateCustomer);
 app.delete('/api/customers/:Sifra_kupca', deleteCustomer);
 
-
 app.get('/api/sellers', getSellers);
 app.post('/api/sellers', addSeller);
 app.put('/api/sellers/:Sifra_prodavaca', updateSeller);
 app.delete('/api/sellers/:Sifra_prodavaca', deleteSeller);
-
 
 app.get('/api/orders', getOrders);
 app.post('/api/orders', addOrder);
@@ -54,5 +52,8 @@ app.put('/api/productsOnOrder/:OrderId/:ProductId', updateProductOnOrder);
 app.delete('/api/productsOnOrder/:OrderId/:ProductId', deleteProductOnOrder);
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  const baseURL = process.env.NODE_ENV === 'development' 
+    ? `http://localhost:${port}` 
+    : 'https://kadmin-7i923vaxr-goldenarchangels-projects.vercel.app';
+  console.log(`Server is running on ${baseURL}`);
 });

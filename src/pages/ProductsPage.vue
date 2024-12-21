@@ -70,6 +70,10 @@
   import axios from 'axios';
   import CategoryDropdown from 'src/components/CategoryDropdown.vue';
   
+  const baseURL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api' 
+    : 'https://kadmin-7i923vaxr-goldenarchangels-projects.vercel.app/api';
+  
   const products = ref([]);
   const searchTerm = ref('');
   const isDialogOpen = ref(false);
@@ -89,7 +93,7 @@
   ];
   
   const fetchProducts = async () => {
-    const response = await axios.get('http://localhost:3000/api/products');
+    const response = await axios.get(`${baseURL}/products`);
     products.value = response.data.map(product => ({
       ...product,
       isEditingNaziv: false,
@@ -125,19 +129,19 @@
   };
   
   const addProduct = async () => {
-    await axios.post('http://localhost:3000/api/products', form.value);
+    await axios.post(`${baseURL}/products`, form.value);
     fetchProducts();
     closeDialog();
   };
   
   const updateProduct = async () => {
-    await axios.put(`http://localhost:3000/api/products/${form.value.Sifra_proizvoda}`, form.value);
+    await axios.put(`${baseURL}/products/${form.value.Sifra_proizvoda}`, form.value);
     fetchProducts();
     closeDialog();
   };
   
   const deleteProduct = async (productId) => {
-    await axios.delete(`http://localhost:3000/api/products/${productId}`);
+    await axios.delete(`${baseURL}/products/${productId}`);
     fetchProducts();
   };
   
@@ -159,7 +163,7 @@
     if (field === 'naziv') product.isEditingNaziv = false;
     if (field === 'marka') product.isEditingMarka = false;
     if (field === 'cijena') product.isEditingCijena = false;
-    await axios.put(`http://localhost:3000/api/products/${product.Sifra_proizvoda}`, product);
+    await axios.put(`${baseURL}/products/${product.Sifra_proizvoda}`, product);
     fetchProducts();
   };
   
