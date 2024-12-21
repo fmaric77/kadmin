@@ -14,7 +14,12 @@ import { getProductsOnOrder, addProductOnOrder, updateProductOnOrder, deleteProd
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://kadmin-ten.vercel.app'],
+  credentials: true
+}));
+
+
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'dist/spa')));
 
