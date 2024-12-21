@@ -62,6 +62,13 @@ app.delete('/api/productsOnOrder/:OrderId/:ProductId', deleteProductOnOrder);
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/spa', 'index.html'));
 });
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ 
+    message: 'Internal Server Error',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
 
 app.listen(port, () => {
   const baseURL = process.env.NODE_ENV === 'development' 
