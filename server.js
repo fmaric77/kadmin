@@ -54,6 +54,6 @@ app.delete('/api/productsOnOrder/:OrderId/:ProductId', deleteProductOnOrder);
 app.listen(port, () => {
   const baseURL = process.env.NODE_ENV === 'development' 
     ? `http://localhost:${port}` 
-    : 'https://kadmin-7i923vaxr-goldenarchangels-projects.vercel.app';
+    : 'https://kadmin-ten.vercel.app/';
   console.log(`Server is running on ${baseURL}`);
 });
