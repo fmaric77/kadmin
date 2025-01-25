@@ -130,9 +130,16 @@
   };
   
   const deleteSeller = async (sellerId) => {
-    await axios.delete(`${baseURL}/sellers/${sellerId}`);
-    fetchSellers();
-  };
+  if (confirm('Jeste li sigurni da želite izbrisati ovog prodavača?')) {
+    try {
+      await axios.delete(`${baseURL}/sellers/${sellerId}`);
+      fetchSellers();
+    } catch (error) {
+      console.error('Error deleting seller:', error);
+      alert('Došlo je do greške prilikom brisanja prodavača.');
+    }
+  }
+};
   
   const closeDialog = () => {
     isDialogOpen.value = false;

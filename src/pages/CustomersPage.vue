@@ -155,8 +155,15 @@ const updateCustomer = async () => {
 };
 
 const deleteCustomer = async (customerId) => {
-  await axios.delete(`${baseURL}/customers/${customerId}`);
-  fetchCustomers();
+  if (confirm('Jeste li sigurni da želite izbrisati ovog kupca?')) {
+    try {
+      await axios.delete(`${baseURL}/customers/${customerId}`);
+      fetchCustomers();
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+      alert('Došlo je do greške prilikom brisanja kupca.');
+    }
+  }
 };
 
 const closeDialog = () => {

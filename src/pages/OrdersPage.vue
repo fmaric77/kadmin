@@ -8,6 +8,7 @@
           <CategoryDropdown @categoryChanged="handleCategoryChange" />
           <q-input filled v-model="searchTerm" label="Pretraži" class="q-mb-md" />
           <q-btn @click="showAddOrderDialog" label="Dodaj Narudžbu" color="primary" class="q-mb-md" />
+          <q-btn @click="exportOrdersToPDF" label="Izvezi narudžbe" color="secondary" class="q-mb-md" />
           <q-table :rows="filteredOrders" :columns="columns" row-key="Sifra_narudzbe">
             <template v-slot:body-cell-Sifra_narudzbe="props">
               <q-td :props="props">{{ props.row.Sifra_narudzbe }}</q-td>
@@ -95,7 +96,9 @@
   
   <script setup>
   import { ref, onMounted, computed } from 'vue';
-  import axios from 'axios';
+  import jsPDF from 'jspdf';
+  import autoTable from 'jspdf-autotable';
+    import axios from 'axios';
   import CategoryDropdown from 'src/components/CategoryDropdown.vue';
   
   const baseURL = window.location.hostname === 'localhost' 
@@ -111,6 +114,7 @@
       year: 'numeric'
     });
   };
+  
   
   const orders = ref([]);
   const customers = ref([]);
@@ -269,6 +273,25 @@
       alert('Došlo je do greške prilikom brisanja narudžbe.');
     }
   };
+
+  const exportOrdersToPDF = () => {
+  const doc = new jsPDF();
+  const tableData = orders.value.map((order) => ([
+    order.Sifra_narudzbe,
+    getCustomerName(order.SIFRA_KUPCA),
+    getSellerName(order.SIFRA_PRODAVACA),
+    formatDate(order.Datum_narudzbe),
+    order.Nacin_placanja,
+    order.Cijena_narudzbe
+  ]));
+
+  autoTable(doc, {
+  head: [['Šifra', 'Kupac', 'Prodavac', 'Datum', 'Nacin placanja', 'Cijena']],
+  body: tableData
+});
+
+  doc.save('narudzbe.pdf');
+};
   
   const closeDialog = () => {
     isDialogOpen.value = false;
@@ -287,6 +310,9 @@
     const seller = sellers.value.find(s => s.value === id);
     return seller ? seller.label : 'Nepoznat prodavač';
   };
+
+
+
   
   onMounted(() => {
     fetchOrders();

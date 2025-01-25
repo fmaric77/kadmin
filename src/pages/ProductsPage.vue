@@ -141,9 +141,16 @@
   };
   
   const deleteProduct = async (productId) => {
-    await axios.delete(`${baseURL}/products/${productId}`);
-    fetchProducts();
-  };
+  if (confirm('Jeste li sigurni da želite izbrisati ovaj proizvod?')) {
+    try {
+      await axios.delete(`${baseURL}/products/${productId}`);
+      fetchProducts();
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      alert('Došlo je do greške prilikom brisanja proizvoda.');
+    }
+  }
+};
   
   const closeDialog = () => {
     isDialogOpen.value = false;
