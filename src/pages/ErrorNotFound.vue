@@ -10,7 +10,7 @@
       </div>
 
       <div class="text-h6 q-mt-md" style="opacity:.7">
-        Izgleda aa ste zalutali u digitalnu pustinju!<br>
+        Izgleda da ste zalutali u digitalnu pustinju!<br>
         Možda ste tražili oazu, ali našli ste samo pijesak.<br>
         <span style="font-size: 2em;">🏜️</span>
       </div>
