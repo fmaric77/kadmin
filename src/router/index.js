@@ -15,9 +15,10 @@ export default route(function (/* { store, ssrContext } */) {
 
   Router.beforeEach((to, from, next) => {
     const authToken = localStorage.getItem('authToken');
-    if (to.path === '/' && authToken) {
-      next('/admin-board'); // Redirect to admin board if authenticated
-    } else if (to.path === '/admin-board' && !authToken) {
+    const publicPages = ['/']; 
+    const authRequired = !publicPages.includes(to.path);
+
+    if (authRequired && !authToken) {
       next('/'); // Redirect to login page if not authenticated
     } else {
       next(); // Proceed to the route
