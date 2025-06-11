@@ -80,8 +80,8 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import CategoryDropdown from 'src/components/CategoryDropdown.vue';
 
-const baseURL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:3000/api' 
+const baseURL = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000/api'
   : 'https://kadmin-ten.vercel.app/api';
 
 const customers = ref([]);
