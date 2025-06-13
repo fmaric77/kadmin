@@ -1,0 +1,32 @@
+// api su testirani pomoću alata Postman koristeći HTTP metodu gdje se šalje API Url endpoint i izvršava se upit prema bazi:
+očeivani endpointovi za testiranje:
+ovo su api rute za testiranje :
+/ Customer routes
+app.get('/api/customers', getCustomers);
+app.post('/api/customers', addCustomer);
+app.put('/api/customers/:Sifra_kupca', updateCustomer);
+app.delete('/api/customers/:Sifra_kupca', deleteCustomer);
+
+// Seller routes
+app.get('/api/sellers', getSellers);
+app.post('/api/sellers', addSeller);
+app.put('/api/sellers/:Sifra_prodavaca', updateSeller);
+app.delete('/api/sellers/:Sifra_prodavaca', deleteSeller);
+
+// Order routes
+app.get('/api/orders', getOrders);
+app.post('/api/orders', addOrder);
+app.put('/api/orders/:Sifra_narudzbe', updateOrder);
+app.delete('/api/orders/:Sifra_narudzbe', deleteOrder);
+
+// Product routes
+app.get('/api/products', getProducts);
+app.post('/api/products', addProduct);
+app.put('/api/products/:Sifra_proizvoda', updateProduct);
+app.delete('/api/products/:Sifra_proizvoda', deleteProduct);
+
+// ProductsOnOrder routes
+app.get('/api/productsOnOrder', getProductsOnOrder);
+app.post('/api/productsOnOrder', addProductOnOrder);
+app.put('/api/productsOnOrder/:OrderId/:ProductId', updateProductOnOrder);
+app.delete('/api/productsOnOrder/:OrderId/:ProductId', deleteProductOnOrder);
